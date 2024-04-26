@@ -1,0 +1,41 @@
+#include <stdio.h>
+
+float calcularInteres(float monto, float tasa, int años) {
+    float interes = monto * tasa * años;
+    return interes;
+}
+
+float calcularInteresTotal(float monto, float tasa, int años) {
+    float interesTotal = 0;
+    for (int i = 1; i <= años; i++) {
+        interesTotal += calcularInteres(monto, tasa, i);
+    }
+    return interesTotal;
+}
+
+int main() {
+    float monto;
+    float tasa;
+    int años;
+
+  
+    printf("Ingrese el monto del crédito: ");
+    scanf("%f", &monto);
+    printf("Ingrese la tasa de interés (porcentaje): ");
+    scanf("%f", &tasa);
+    printf("Ingrese la cantidad de años: ");
+    scanf("%d", &años);
+
+ 
+    printf("\nAño\tInterés\t\tInterés Acumulado\n");
+    for (int i = 1; i <= años; i++) {
+        float interes = calcularInteres(monto, tasa/100, i);
+        printf("%d\t%.2f\t\t%.2f\n", i, interes, calcularInteresTotal(monto, tasa/100, i));
+    }
+
+   
+    float interesTotal = calcularInteresTotal(monto, tasa/100, años);
+    printf("\nInterés total de todos los años: %.2f\n", interesTotal);
+
+    return 0;
+}
