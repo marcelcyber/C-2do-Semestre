@@ -1,0 +1,132 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_PRODUCTOS 100
+#define MAX_NOMBRE 50
+
+// Definición de la estructura para el producto
+struct Producto {
+    char nombre[MAX_NOMBRE];
+    float precio;
+    int cantidad;
+};
+
+// Declaraciones de funciones
+void ingresarProducto(struct Producto inventario[], int *numProductos);
+void editarProducto(struct Producto inventario[], int numProductos);
+void eliminarProducto(struct Producto inventario[], int *numProductos);
+void listarProductos(struct Producto inventario[], int numProductos);
+
+int main() {
+    struct Producto inventario[MAX_PRODUCTOS];
+    int numProductos = 0;
+    int opcion;
+
+    do {
+        printf("\nSistema de inventario de papelería\n");
+        printf("1. Ingresar producto\n");
+        printf("2. Editar producto\n");
+        printf("3. Eliminar producto\n");
+        printf("4. Listar productos\n");
+        printf("5. Salir\n");
+        printf("Seleccione una opción: ");
+        scanf("%d", &opcion);
+
+        switch (opcion) {
+            case 1:
+                ingresarProducto(inventario, &numProductos);
+                break;
+            case 2:
+                editarProducto(inventario, numProductos);
+                break;
+            case 3:
+                eliminarProducto(inventario, &numProductos);
+                break;
+            case 4:
+                listarProductos(inventario, numProductos);
+                break;
+            case 5:
+                printf("Saliendo del programa...\n");
+                break;
+            default:
+                printf("Opción no válida. Por favor, seleccione una opción válida.\n");
+                break;
+        }
+    } while (opcion != 5);
+
+    return 0;
+}
+
+// Función para ingresar un nuevo producto al inventario
+void ingresarProducto(struct Producto inventario[], int *numProductos) {
+    if (*numProductos < MAX_PRODUCTOS) {
+        printf("Ingrese el nombre del producto: ");
+        scanf("%s", inventario[*numProductos].nombre);
+        printf("Ingrese el precio del producto: ");
+        scanf("%f", &inventario[*numProductos].precio);
+        printf("Ingrese la cantidad del producto: ");
+        scanf("%d", &inventario[*numProductos].cantidad);
+        
+        (*numProductos)++;
+        printf("Producto ingresado correctamente.\n");
+    } else {
+        printf("El inventario está lleno, no se pueden agregar más productos.\n");
+    }
+}
+
+// Función para editar un producto del inventario
+void editarProducto(struct Producto inventario[], int numProductos) {
+    char nombreEditar[MAX_NOMBRE];
+    printf("Ingrese el nombre del producto a editar: ");
+    scanf("%s", nombreEditar);
+
+    int encontrado = 0;
+    for (int i = 0; i < numProductos; i++) {
+        if (strcmp(inventario[i].nombre, nombreEditar) == 0) {
+            printf("Ingrese el nuevo precio del producto: ");
+            scanf("%f", &inventario[i].precio);
+            printf("Ingrese la nueva cantidad del producto: ");
+            scanf("%d", &inventario[i].cantidad);
+            printf("Producto editado correctamente.\n");
+            encontrado = 1;
+            break;
+        }
+    }
+
+    if (!encontrado) {
+        printf("Producto no encontrado en el inventario.\n");
+    }
+}
+
+// Función para eliminar un producto del inventario
+void eliminarProducto(struct Producto inventario[], int *numProductos) {
+    char nombreEliminar[MAX_NOMBRE];
+    printf("Ingrese el nombre del producto a eliminar: ");
+    scanf("%s", nombreEliminar);
+
+    int encontrado = 0;
+    for (int i = 0; i < *numProductos; i++) {
+        if (strcmp(inventario[i].nombre, nombreEliminar) == 0) {
+            for (int j = i; j < *numProductos - 1; j++) {
+                inventario[j] = inventario[j + 1];
+            }
+            (*numProductos)--;
+            printf("Producto eliminado correctamente.\n");
+            encontrado = 1;
+            break;
+        }
+    }
+
+    if (!encontrado) {
+        printf("Producto no encontrado en el inventario.\n");
+    }
+}
+
+// Función para listar todos los productos del inventario
+void listarProductos(struct Producto inventario[], int numProductos) {
+    printf("Productos en el inventario:\n");
+    printf("Nombre\t\tPrecio\tCantidad\n");
+    for (int i = 0; i < numProductos; i++) {
+        printf("%s\t\t%.2f\t%d\n", inventario[i].nombre, inventario[i].precio, inventario[i].cantidad);
+    }
+}
